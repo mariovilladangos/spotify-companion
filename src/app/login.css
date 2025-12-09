@@ -1,0 +1,26 @@
+button{
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.LoginApp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #191414;
+    color: white;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.LoginTitle {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,53 @@
+
+
+.DashboardNav{
+    position: fixed;
+    top:0;
+    left:0;
+    height: 60px;
+    width: 100%;
+    background-color: #282828;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    flex-direction: row;
+}
+.DashboardNav button{
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    font-size: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.DashboardApp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #191414;
+    color: white;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.DashboardTitle {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.DashboardProfilePic{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.DashboardUserInfo{
+    text-align: center;
+    margin-bottom: 30px;
+}
