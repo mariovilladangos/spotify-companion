@@ -1,3 +1,5 @@
+import {getAccessToken, refreshAccessToken} from "@/lib/auth";
+
 export async function generatePlaylist(preferences) {
   const { artists, genres, decades, popularity } = preferences;
   const token = getAccessToken();
@@ -52,4 +54,30 @@ export async function generatePlaylist(preferences) {
   ).slice(0, 30);
 
   return uniqueTracks;
+}
+
+export async function spotifyRequest(url) {
+    const token = getAccessToken();
+
+    if (!token) {
+        const newToken = await refreshAccessToken();
+        if (!newToken) {
+            window.location.href = '/';
+            return;
+        }
+    }
+
+    const response = await fetch(url, {
+        headers: {'Authorization': `Bearer ${token}`}
+    });
+
+    if (response.status === 401) {
+        const newToken = await refreshAccessToken();
+    }
+
+    if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
 }

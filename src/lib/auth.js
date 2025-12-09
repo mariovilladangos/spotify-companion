@@ -46,7 +46,7 @@ export function saveTokens(accessToken, refreshToken, expiresIn) {
   localStorage.setItem('spotify_token_expiration', expirationTime.toString());
 }
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
     const refreshToken = localStorage.getItem('spotify_refresh_token');
 
     const response = await fetch('/api/refresh-token', {

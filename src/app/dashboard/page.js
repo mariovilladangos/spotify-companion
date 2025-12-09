@@ -2,86 +2,68 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {getAccessToken, isAuthenticated, getSpotifyAuthUrl, logout} from '@/lib/auth';
+import {getAccessToken, refreshAccessToken, isAuthenticated, getSpotifyAuthUrl, logout} from '@/lib/auth';
+import { spotifyRequest } from '@/lib/spotify';
 
-import './dashboard.css';
+import ArtistWidget from '@/components/widgets/ArtistWidget';
+import './Dashboard.css';
 
-export default function Home() {
+export function Home() {
     const router = useRouter();
     const [data, setData] = useState(null);
-
-    async function spotifyRequest(url) {
-        const token = getAccessToken();
-
-        if (!token) {
-            // Intentar refrescar token
-            const newToken = await refreshAccessToken();
-            if (!newToken) {
-                // Redirigir a login
-                window.location.href = '/';
-                return;
-            }
-        }
-
-        const response = await fetch(url, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.status === 401) {
-            // Token expirado, refrescar
-            const newToken = await refreshAccessToken();
-            // Reintentar petición
-        }
-
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-
-        return response.json();
-    }
 
     const handleLogout = () => {
         logout();
         router.push('/');
     }
 
-    async function tryFetch(){
+    async function Fetch() {
         const data = await spotifyRequest(`https://api.spotify.com/v1/me`);
         console.log('User Data:', data);
+/*
+        const artists = await spotifyRequest(`https://api.spotify.com/v1/me/top/artists`);
+        console.log('User Top Artists:', artists);
+
+        const tracks = await spotifyRequest(`https://api.spotify.com/v1/me/top/tracks`);
+        console.log('User Top Tracks:', tracks);
+
+        const playlists = await spotifyRequest(`https://api.spotify.com/v1/users/${data.id}/playlists`);
+        console.log('User Playlists:', playlists);
+*/
         setData(data);
     }
 
+    const tryFetch = () => {
+        try { Fetch(); }
+        catch (error) { console.error('Fetch error:', error); }
+    }
+
     useEffect(() => {
-        try {
-            tryFetch();
-        }
-        catch (error) {
-            console.error('Error during initial fetch:', error);
-        }
-    }, [])
+        tryFetch()
+    }, [router])
 
     return (
         <div className={"DashboardApp"}>
+            <div className={"DashboardNav"}>
+                <div className={"DashboardNavLeft"}>
+                    {data != null ? <img src={data.images[0].url}/> : null}
+                </div>
+                <div className={"DashboardNavCenter"}></div>
+                <div className={"DashboardNavRight"}>
+                    <button onClick={tryFetch}><img src={"/Refresh.png"}/></button>
+                    <button onClick={handleLogout}><img src={"/Logout.png"}></img></button>
+                </div>
+            </div>
             {data != null ?
-                <>
-                    <div className={"DashboardNav"}>
-                        <div className={"DashboardNavLeft"}>
-                            <img src={data.images[0].url} />
-                        </div>
-                            <div className={"DashboardNavCenter"}></div>
-                        <div className={"DashboardNavRight"}>
-                            <button onClick={tryFetch}><img src={"/Refresh.png"}/></button>
-                            <button onClick={handleLogout}><img src={"/Logout.png"}></img></button>
-                        </div>
-                    </div>
-                    <div className={"DashboardMain"}>
-                        <h2>Bienvenido de vuelta, {data.display_name}!</h2>
-                    </div>
-                </>
+                <div className={"DashboardMain"}>
+                    <h2>Bienvenido de vuelta, {data.display_name}!</h2>
+                    <ArtistWidget />
+                </div>
             : null}
         </div>
     );
 }
 
+export default Home;
 
 
