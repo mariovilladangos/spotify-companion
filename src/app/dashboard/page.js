@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {getAccessToken, isAuthenticated, getSpotifyAuthUrl, logout} from '@/lib/auth';
-import Image from 'next/image';
 
 import './dashboard.css';
 
@@ -63,15 +62,23 @@ export default function Home() {
 
     return (
         <div className={"DashboardApp"}>
-            <div className={"DashboardNav"}>
-                <button onClick={handleLogout}>Log Out</button>
-                <button onClick={tryFetch}>Refresh Fetch</button>
-            </div>
             {data != null ?
-                <div className={"DashboardUserInfo"}>
-                    <img className={"DashboardProfilePic"} src={data.images[0].url} alt={""}></img>
-                </div>
-            : console.log(data)}
+                <>
+                    <div className={"DashboardNav"}>
+                        <div className={"DashboardNavLeft"}>
+                            <img src={data.images[0].url} />
+                        </div>
+                            <div className={"DashboardNavCenter"}></div>
+                        <div className={"DashboardNavRight"}>
+                            <button onClick={tryFetch}><img src={"/Refresh.png"}/></button>
+                            <button onClick={handleLogout}><img src={"/Logout.png"}></img></button>
+                        </div>
+                    </div>
+                    <div className={"DashboardMain"}>
+                        <h2>Bienvenido de vuelta, {data.display_name}!</h2>
+                    </div>
+                </>
+            : null}
         </div>
     );
 }

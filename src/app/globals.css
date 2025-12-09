@@ -3,6 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+    /* Spotify Inspired */
+    --primary: #1DB954;
+    --secondary: #191414;
+    --accent: #1ed760;
+
+    /* Dark Mode */
+    --bg-dark: #121212;
+    --bg-card: #181818;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
 }
 
 @theme inline {
