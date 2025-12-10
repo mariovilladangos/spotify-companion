@@ -15,9 +15,9 @@ import PopularityWidget from "@/components/widgets/playlist/PopularityWidget";
 export function Home() {
     const router = useRouter();
     const [data, setData] = useState(null);
-    const [artists, setArtists] = useState(null);
-    const [decades, setDecades] = useState(null);
-    const [genres, setGenres] = useState(null);
+    const [artists, setArtists] = useState([]);
+    const [decades, setDecades] = useState([]);
+    const [genres, setGenres] = useState([]);
     const [populatiry, setPopularity] = useState(null);
 
 
@@ -143,7 +143,7 @@ export function Home() {
             artists: artists || [],
             genres: genres || [],
             decades: decades || [],
-            popularity: populatiry || null
+            popularity: populatiry || [0, 100]
         }
         const tracks = await generatePlaylist(preferences)
         localStorage.setItem('playlist', JSON.stringify({items: tracks}));

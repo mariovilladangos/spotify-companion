@@ -4,7 +4,7 @@ import { spotifyRequest } from '@/lib/spotify';
 
 import '../../Widgets.css';
 
-function DecadeWidget({ tracks }) {
+function DecadeWidget() {
     const router = useRouter();
     const [data, setData] = useState(null);
 
@@ -36,7 +36,12 @@ function DecadeWidget({ tracks }) {
         }
 
         let pl = JSON.parse(localStorage.getItem('playlist'));
+        if (pl == null){
+            pl = {items: []};
+            localStorage.setItem('playlist', JSON.stringify(pl));
+        }
         setData(pl);
+
     }
 
     function handleImg(track){
@@ -132,7 +137,7 @@ function DecadeWidget({ tracks }) {
                         )) :  <span><h3>Tu playlist está vacía :( {isFav}</h3></span>}
                     </div>
                 </div>
-                : null}
+            : null}
         </>
     );
 }
