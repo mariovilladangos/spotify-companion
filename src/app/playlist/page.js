@@ -41,6 +41,7 @@ export function Home() {
                 <div className={"DashboardMain"}>
                     <h2>Revisemos tu playlist personalizada, {data.display_name}!</h2>
                     <TrackWidget />
+                    <button>Guardar en spotify (work in progress)</button>
                 </div>
             : null}
         </div>
