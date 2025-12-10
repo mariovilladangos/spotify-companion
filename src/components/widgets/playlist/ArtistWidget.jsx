@@ -2,17 +2,16 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { spotifyRequest } from '@/lib/spotify';
 
-import '../Widgets.css';
+import '../../Widgets.css';
 
-function ArtistWidget() {
+function ArtistWidget({ onSelect, selectedItems }) {
     const router = useRouter();
     const [data, setData] = useState(null);
 
-    const content = useRef(null);
     const search = useRef(null);
     const [isSearch, setIsSearch] = useState(false);
-    const fav = useRef(null);
-    const [isFav, setIsFav] = useState(false);
+    const sel = useRef(null);
+    const [isSel, setIsSel] = useState(false);
 
     async function handleLoad(){
         const artists = await spotifyRequest(`https://api.spotify.com/v1/me/top/artists`);
@@ -33,40 +32,29 @@ function ArtistWidget() {
         setData(artists.artists);
     }
 
-    function handleFavorites(){
-        if (!isFav) {
+    function handleSelection(){
+        if (!isSel) {
             handleLoad();
             return;
         }
 
-        let artists = JSON.parse(localStorage.getItem('artists_favorites'));
+        let artists = JSON.parse(localStorage.getItem('artists_selected'));
         if (artists == null) artists = {items:[]};
 
         setData(artists);
-        localStorage.setItem('artists_favorites', JSON.stringify(artists));
+        localStorage.setItem('artists_selected', JSON.stringify(artists));
     }
 
     function handleImg(artist){
-        let artists = JSON.parse(localStorage.getItem('artists_favorites'));
-        if (artists == null) artists = {items:[]};
-
-        if (isFav) {
-            const filtered = artists.items.filter(item => item.id != artist.id);
-            artists.items = filtered;
-            localStorage.setItem('artists_favorites', JSON.stringify(artists));
-            handleFavorites();
-        }
-        else{
-            const filtered = artists.items.filter(item => item.id == artist.id);
-            if (filtered.length == 0) artists.items.push(artist);
-            localStorage.setItem('artists_favorites', JSON.stringify(artists));
-        }
+        if(!isSel && selectedItems.length >= 5) return;
+        onSelect(artist, isSel, 'artist');
+        if(isSel) handleSelection();
     }
 
     function handleClick(ref){
         switch(ref){
-            case fav:
-                toggle(fav)
+            case sel:
+                toggle(sel)
                 break;
             case search:
                 toggle(search)
@@ -77,14 +65,14 @@ function ArtistWidget() {
     }
 
     function toggle(ref){
-        if (ref == fav) {
-            if (isFav) {
-                setIsFav(false);
-                fav.current.src = "/HeartO.png"
+        if (ref == sel) {
+            if (isSel) {
+                setIsSel(false);
+                sel.current.src = "/CheckO.png"
             } else {
                 if(isSearch) toggle(search)
-                setIsFav(true);
-                fav.current.src = "/HeartF.png"
+                setIsSel(true);
+                sel.current.src = "/CheckF.png"
             }
         }
         else if (ref == search){
@@ -95,7 +83,7 @@ function ArtistWidget() {
                 handleLoad()
             }
             else{
-                if(isFav) toggle(fav)
+                if(isSel) toggle(sel)
                 setIsSearch(true);
                 search.current.style.display = "block";
                 search.current.focus();
@@ -104,8 +92,8 @@ function ArtistWidget() {
     }
 
     useEffect(() => {
-        handleFavorites();
-    }, [isFav]);
+        handleSelection();
+    }, [isSel]);
 
     return(
         <>
@@ -113,7 +101,7 @@ function ArtistWidget() {
                 <div className="BoxWidget">
                     <header>
                         <h3>Artistas</h3>
-                        <img ref={fav} src={'/HeartO.png'} onClick={() => handleClick(fav)} />
+                        <img ref={sel} src={'/CheckO.png'} onClick={() => handleClick(sel)} />
                         <img src={'/Glass.png'} onClick={() => handleClick(search)} />
                         <input ref={search} type="search" onChange={() => handleSearch()} />
                     </header>
@@ -123,7 +111,7 @@ function ArtistWidget() {
                                 {artist.name ? <p>{artist.name}</p> : null}
                                 {<img src={artist.images[0]?.url ?? '/DefUser.png'} alt={artist.name} title={artist.name} onClick={() => handleImg(artist)} />}
                             </div>
-                        )) : <span><h3>Aún no tienes artistas favoritos.</h3></span>}
+                        )) : <span><h3>No has seleccionado ningún artista.</h3></span>}
                     </div>
                 </div>
             : null}

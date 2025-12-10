@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { spotifyRequest } from '@/lib/spotify';
 
 import '../Widgets.css';
 
-function ArtistWidget() {
+function DecadeWidget() {
     const router = useRouter();
     const [data, setData] = useState(null);
 
@@ -15,8 +15,9 @@ function ArtistWidget() {
     const [isFav, setIsFav] = useState(false);
 
     async function handleLoad(){
-        const artists = await spotifyRequest(`https://api.spotify.com/v1/me/top/artists`);
-        setData(artists);
+        const tracks = await spotifyRequest(`https://api.spotify.com/v1/me/top/tracks`);
+        console.log('User Top Tracks:', tracks);
+        setData(tracks);
     }
 
     useEffect(() => {
@@ -29,8 +30,8 @@ function ArtistWidget() {
             return;
         }
 
-        const artists = await spotifyRequest(`https://api.spotify.com/v1/search?type=artist&q=${search.current.value}&limit=20`);
-        setData(artists.artists);
+        const tracks = await spotifyRequest(`https://api.spotify.com/v1/search?type=track&q=${search.current.value}&limit=20`);
+        setData(tracks.tracks);
     }
 
     function handleFavorites(){
@@ -39,27 +40,27 @@ function ArtistWidget() {
             return;
         }
 
-        let artists = JSON.parse(localStorage.getItem('artists_favorites'));
-        if (artists == null) artists = {items:[]};
+        let tracks = JSON.parse(localStorage.getItem('tracks_favorites'));
+        if (tracks == null) tracks = {items:[]};
 
-        setData(artists);
-        localStorage.setItem('artists_favorites', JSON.stringify(artists));
+        setData(tracks);
+        localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
     }
 
-    function handleImg(artist){
-        let artists = JSON.parse(localStorage.getItem('artists_favorites'));
-        if (artists == null) artists = {items:[]};
+    function handleImg(track){
+        let tracks = JSON.parse(localStorage.getItem('tracks_favorites'));
+        if (tracks == null) tracks = {items:[]};
 
         if (isFav) {
-            const filtered = artists.items.filter(item => item.id != artist.id);
-            artists.items = filtered;
-            localStorage.setItem('artists_favorites', JSON.stringify(artists));
+            const filtered = tracks.items.filter(item => item.id != track.id);
+            tracks.items = filtered;
+            localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
             handleFavorites();
         }
         else{
-            const filtered = artists.items.filter(item => item.id == artist.id);
-            if (filtered.length == 0) artists.items.push(artist);
-            localStorage.setItem('artists_favorites', JSON.stringify(artists));
+            const filtered = tracks.items.filter(item => item.id == track.id);
+            if (filtered.length == 0) tracks.items.push(track);
+            localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
         }
     }
 
@@ -109,26 +110,26 @@ function ArtistWidget() {
 
     return(
         <>
-            {data != null ?
+            {data != null?
                 <div className="BoxWidget">
                     <header>
-                        <h3>Artistas</h3>
+                        <h3>Canciones</h3>
                         <img ref={fav} src={'/HeartO.png'} onClick={() => handleClick(fav)} />
                         <img src={'/Glass.png'} onClick={() => handleClick(search)} />
                         <input ref={search} type="search" onChange={() => handleSearch()} />
                     </header>
                     <div className="BoxWidgetContent">
-                        {data.items.length > 0 ? data.items.map((artist) => (
-                            <div key={artist.id} className="Item">
-                                {artist.name ? <p>{artist.name}</p> : null}
-                                {<img src={artist.images[0]?.url ?? '/DefUser.png'} alt={artist.name} title={artist.name} onClick={() => handleImg(artist)} />}
+                        {data.items.length > 0 ? data.items.map((track) => (
+                            <div key={track.id} className="Item">
+                                {track.name ? <p>{track.name}</p> : null}
+                                {track.album.images[0] ? <img src={track.album.images[0].url} alt={track.name} title={track.name} onClick={() => handleImg(track)} /> : null}
                             </div>
                         )) : <span><h3>Aún no tienes artistas favoritos.</h3></span>}
                     </div>
                 </div>
-            : null}
+                : null}
         </>
     );
 }
 
-export default ArtistWidget;
+export default DecadeWidget;
