@@ -36,7 +36,7 @@ function PopularityWidget({ onSelect, selectedItems }) {
         }
 
         lastImg.current ? lastImg.current.style.border = 'none' : null;
-        img.style.border = '2px solid var(--primary)';
+        img.style.border = '4px solid var(--primary)';
         lastImg.current = img;
 
         onSelect(popularity, isSel, 'popularity');

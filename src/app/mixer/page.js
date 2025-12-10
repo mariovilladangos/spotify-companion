@@ -34,6 +34,7 @@ export function Home() {
     }
 
     const Start = () => {
+        /* IF YOU WANT TO RESTORE PREVIOUS SELECTIONS, UNCOMMENT THIS BLOCK
         let temp = JSON.parse(localStorage.getItem('artists_selected'));
         if (temp == null) temp = {items:[]};
         setArtists(temp.items);
@@ -45,9 +46,12 @@ export function Home() {
         temp = JSON.parse(localStorage.getItem('genres_selected'));
         if (temp == null) temp = {items:[]};
         setGenres(temp.items);
+        */
 
-        temp = JSON.parse(localStorage.getItem('popularity_selected'));
-        setPopularity(temp);
+        localStorage.removeItem('artists_selected');
+        localStorage.removeItem('decades_selected');
+        localStorage.removeItem('genres_selected');
+        localStorage.removeItem('popularity_selected');
 
         try { Fetch(); }
         catch (error) { console.error('Fetch error:', error); }

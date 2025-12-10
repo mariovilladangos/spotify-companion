@@ -68,6 +68,7 @@ header img{
 }
 header img:hover{
     transform: scale(1.05);
+    cursor: pointer;
 }
 header input{
     margin-top: 4px;
@@ -99,6 +100,10 @@ header input:focus{
 }
 .Item img:hover{
     opacity: 0.1;
+    cursor: pointer;
+}
+.Item img:active{
+    transform: scale(1.05);
 }
 
 .Item p{
