@@ -78,7 +78,7 @@ function GenreWidget({ onSelect, selectedItems }) {
                 <div className="BoxWidget">
                     <header>
                         <h3>A tu gusto. Al punto</h3>
-                        <img ref={sel} src={'/CheckO.png'} onClick={() => handleClick(sel)} />
+                        <img ref={sel} className={"alone"} src={'/CheckO.png'} onClick={() => handleClick(sel)} />
                     </header>
                     <div className="BoxWidgetContent">
                         {gen.items.length > 0 ? gen.items.map((genre, i) => (

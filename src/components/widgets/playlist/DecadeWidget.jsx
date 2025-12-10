@@ -76,7 +76,7 @@ function DecadeWidget({ onSelect, selectedItems }) {
                 <div className="BoxWidget">
                     <header>
                         <h3>Elige Nostalgia</h3>
-                        <img ref={sel} src={'/CheckO.png'} onClick={() => handleClick(sel)} />
+                        <img ref={sel} className={"alone"} src={'/CheckO.png'} onClick={() => handleClick(sel)} />
                     </header>
                     <div className="BoxWidgetContent" style={{overflowX: 'hidden'}}>
                         {dec.items.length > 0 ? dec.items.map((decade, i) => (

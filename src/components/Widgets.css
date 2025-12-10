@@ -131,6 +131,9 @@ header input:focus{
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+    header .alone{
+        margin-left: 35px;
+    }
     header input{
         margin-top: 4px;
         height: 15px;
