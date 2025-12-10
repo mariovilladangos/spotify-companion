@@ -26,6 +26,7 @@ export default function Navbar({ imgUrl, onRefresh }) {
             <div className={"NavCenter"}>
                 <div onClick={() => goTo('/dashboard')} ><h2>Dashboard</h2></div>
                 <div onClick={() => goTo('/mixer')} ><h2>Mixer</h2></div>
+                <div onClick={() => goTo('/playlist')} ><h2>Playlist</h2></div>
             </div>
             <div className={"NavRight"}>
                 <button onClick={() => handleRefresh()}><img src={"/Refresh.png"}/></button>
@@ -34,6 +35,7 @@ export default function Navbar({ imgUrl, onRefresh }) {
             <div className={"NavBottom"}>
                 <div onClick={() => goTo('/dashboard')} ><h2>Dashboard</h2></div>
                 <div onClick={() => goTo('/mixer')} ><h2>Mixer</h2></div>
+                <div onClick={() => goTo('/playlist')} ><h2>Playlist</h2></div>
             </div>
         </div>
     );

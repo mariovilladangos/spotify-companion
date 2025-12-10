@@ -25,22 +25,7 @@ export function Home() {
         }
     }
 
-    async function Fetch() {
-        try {
-            const data = await spotifyRequest(`https://api.spotify.com/v1/me`);
-            console.log('User Data:', data);
-            setData(data);
-        }
-        catch (error) {
-            logout()
-            router.push('/');
-        }
-    }
-
     const Start = () => {
-        const data = JSON.parse(localStorage.getItem('playlist'));
-        setData(data);
-
         try { Fetch(); }
         catch (error) { console.error('Fetch error:', error); }
     }
@@ -57,7 +42,7 @@ export function Home() {
                     <h2>Revisemos tu playlist personalizada, {data.display_name}!</h2>
                     <TrackWidget />
                 </div>
-                : null}
+            : null}
         </div>
     );
 }

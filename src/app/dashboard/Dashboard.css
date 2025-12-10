@@ -55,3 +55,9 @@
         border: 3px solid #343434;
     }
 }
+
+@media (max-width: 540px){
+    .DashboardApp {
+        padding: 140px 20px 40px;
+    }
+}

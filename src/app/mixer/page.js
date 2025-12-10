@@ -133,6 +133,8 @@ export function Home() {
     }
 
     async function getPlaylist(){
+        router.push('loading');
+
         const preferences = {
             artists: artists || [],
             genres: genres || [],
@@ -140,7 +142,9 @@ export function Home() {
             popularity: populatiry || null
         }
         const tracks = await generatePlaylist(preferences)
-        localStorage.setItem('playlist', JSON.stringify(tracks));
+        localStorage.setItem('playlist', JSON.stringify({items: tracks}));
+
+        router.push('playlist');
     }
 
     return (

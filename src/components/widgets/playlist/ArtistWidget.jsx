@@ -64,13 +64,13 @@ function ArtistWidget({ onSelect, selectedItems }) {
         }
     }
 
-    function toggle(ref){
+    async function toggle(ref, load){
         if (ref == sel) {
             if (isSel) {
                 setIsSel(false);
                 sel.current.src = "/CheckO.png"
             } else {
-                if(isSearch) toggle(search)
+                if(isSearch) await toggle(search, false)
                 setIsSel(true);
                 sel.current.src = "/CheckF.png"
             }
@@ -80,10 +80,10 @@ function ArtistWidget({ onSelect, selectedItems }) {
                 setIsSearch(false);
                 search.current.style.display = "none";
                 search.current.value = "";
-                handleLoad()
+                if (load == null || load == true) handleLoad()
             }
             else{
-                if(isSel) toggle(sel)
+                if(isSel) await toggle(sel)
                 setIsSearch(true);
                 search.current.style.display = "block";
                 search.current.focus();

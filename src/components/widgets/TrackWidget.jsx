@@ -16,7 +16,6 @@ function DecadeWidget() {
 
     async function handleLoad(){
         const tracks = await spotifyRequest(`https://api.spotify.com/v1/me/top/tracks`);
-        console.log('User Top Tracks:', tracks);
         setData(tracks);
     }
 
@@ -77,13 +76,13 @@ function DecadeWidget() {
         }
     }
 
-    function toggle(ref){
+    async function toggle(ref, load){
         if (ref == fav) {
             if (isFav) {
                 setIsFav(false);
                 fav.current.src = "/HeartO.png"
             } else {
-                if(isSearch) toggle(search)
+                if(isSearch) await toggle(search, false)
                 setIsFav(true);
                 fav.current.src = "/HeartF.png"
             }
@@ -93,10 +92,10 @@ function DecadeWidget() {
                 setIsSearch(false);
                 search.current.style.display = "none";
                 search.current.value = "";
-                handleLoad()
+                if (load == null || load == true) handleLoad()
             }
             else{
-                if(isFav) toggle(fav)
+                if(isFav) await toggle(fav)
                 setIsSearch(true);
                 search.current.style.display = "block";
                 search.current.focus();

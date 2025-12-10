@@ -8,21 +8,16 @@ function DecadeWidget({ tracks }) {
     const router = useRouter();
     const [data, setData] = useState(null);
 
-    const content = useRef(null);
+    const header = useRef(null);
     const search = useRef(null);
     const [isSearch, setIsSearch] = useState(false);
     const fav = useRef(null);
-    const [isFav, setIsFav] = useState(false);
+    const [isFav, setIsFav] = useState(true);
 
     async function handleLoad(){
         const tracks = await spotifyRequest(`https://api.spotify.com/v1/me/top/tracks`);
-        console.log('User Top Tracks:', tracks);
         setData(tracks);
     }
-
-    useEffect(() => {
-        handleLoad()
-    }, [router])
 
     async function handleSearch(){
         if (!isSearch || search.current.value.length === 0) {
@@ -40,27 +35,23 @@ function DecadeWidget({ tracks }) {
             return;
         }
 
-        let tracks = JSON.parse(localStorage.getItem('tracks_favorites'));
-        if (tracks == null) tracks = {items:[]};
-
-        setData(tracks);
-        localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
+        let pl = JSON.parse(localStorage.getItem('playlist'));
+        setData(pl);
     }
 
     function handleImg(track){
-        let tracks = JSON.parse(localStorage.getItem('tracks_favorites'));
-        if (tracks == null) tracks = {items:[]};
+        let pl = JSON.parse(localStorage.getItem('playlist'));
 
         if (isFav) {
-            const filtered = tracks.items.filter(item => item.id != track.id);
-            tracks.items = filtered;
-            localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
+            const filtered = pl.items.filter(item => item.id != track.id);
+            pl.items = filtered;
+            localStorage.setItem('playlist', JSON.stringify(pl));
             handleFavorites();
         }
         else{
-            const filtered = tracks.items.filter(item => item.id == track.id);
-            if (filtered.length == 0) tracks.items.push(track);
-            localStorage.setItem('tracks_favorites', JSON.stringify(tracks));
+            const filtered = pl.items.filter(item => item.id == track.id);
+            if (filtered.length == 0) pl.items.push(track);
+            localStorage.setItem('playlist', JSON.stringify(pl));
         }
     }
 
@@ -77,15 +68,18 @@ function DecadeWidget({ tracks }) {
         }
     }
 
-    function toggle(ref){
+    async function toggle(ref, load){
         if (ref == fav) {
             if (isFav) {
                 setIsFav(false);
                 fav.current.src = "/NoteO.png"
+                header.current.innerText = "Añade canciones"
+                handleLoad();
             } else {
-                if(isSearch) toggle(search)
+                if(isSearch) await toggle(search, false)
                 setIsFav(true);
                 fav.current.src = "/NoteF.png"
+                header.current.innerText = "Canciones"
             }
         }
         else if (ref == search){
@@ -93,10 +87,10 @@ function DecadeWidget({ tracks }) {
                 setIsSearch(false);
                 search.current.style.display = "none";
                 search.current.value = "";
-                handleLoad()
+                if (load == null || load == true) handleLoad()
             }
             else{
-                if(isFav) toggle(fav)
+                if(isFav) await toggle(fav)
                 setIsSearch(true);
                 search.current.style.display = "block";
                 search.current.focus();
@@ -106,15 +100,15 @@ function DecadeWidget({ tracks }) {
 
     useEffect(() => {
         handleFavorites();
-    }, [isFav]);
+    }, [router, isFav]);
 
     return(
         <>
             {data != null?
                 <div className="BoxWidget">
                     <header>
-                        <h3>Canciones</h3>
-                        <img ref={fav} src={'/NoteO.png'} onClick={() => handleClick(fav)} />
+                        <h3 ref={header}>Canciones</h3>
+                        <img ref={fav} src={'/NoteF.png'} onClick={() => handleClick(fav)} />
                         <img src={'/Glass.png'} onClick={() => handleClick(search)} />
                         <input ref={search} type="search" onChange={() => handleSearch()} />
                     </header>
@@ -124,7 +118,7 @@ function DecadeWidget({ tracks }) {
                                 {track.name ? <p>{track.name}</p> : null}
                                 {track.album.images[0] ? <img src={track.album.images[0].url} alt={track.name} title={track.name} onClick={() => handleImg(track)} /> : null}
                             </div>
-                        )) : <span><h3>Tu playlist está vacía :(</h3></span>}
+                        )) :  <span><h3>Tu playlist está vacía :( {isFav}</h3></span>}
                     </div>
                 </div>
                 : null}
