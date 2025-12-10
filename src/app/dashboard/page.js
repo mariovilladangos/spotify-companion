@@ -37,7 +37,7 @@ export function Home() {
 
     return (
         <div className={"DashboardApp"}>
-            <Navbar imgUrl={data?.images[0]?.url?? null} onRefresh={tryFetch} />
+            <Navbar imgUrl={data?.images[0]?.url?? null} onRefresh={tryFetch} page={'d'} />
             {data != null ?
                 <div className={"DashboardMain"}>
                     <h2>Bienvenido de vuelta, {data.display_name}!</h2>

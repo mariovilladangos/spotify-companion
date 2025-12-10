@@ -36,7 +36,7 @@ export function Home() {
 
     return (
         <div className={"DashboardApp"}>
-            <Navbar imgUrl={data?.images[0]?.url?? null} onRefresh={Start} />
+            <Navbar imgUrl={data?.images[0]?.url?? null} onRefresh={Start} page={'p'} />
             {data != null ?
                 <div className={"DashboardMain"}>
                     <h2>Revisemos tu playlist personalizada, {data.display_name}!</h2>
