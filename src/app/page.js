@@ -22,7 +22,7 @@ export default function SpotifyCompanion() {
 
     return (
         <div className="LoginApp">
-            <h1 className="LoginTitle">Spotify Companion</h1>
+            <h1 className="LoginTitle" style={{fontWeight: 'bold'}}>Spotify Companion</h1>
             <button onClick={handleLogin}>
                 Login con Spotify
             </button>

@@ -1,12 +1,25 @@
-button{
+.LoginApp button{
     background-color: #1DB954;
-    color: white;
+    color: var(--text-primary);
     border: none;
     padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 50px;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 5px;
+    width: 80%;
+    height: 60px;
+    border-radius: 8px
+}
+.LoginApp button:hover{
+    cursor: pointer;
+    transform: scale(1.01);
+}
+.LoginApp button:active{
+    outline: none;
+    border: none;
+    transform: scale(0.99);
 }
 
 .LoginApp {
@@ -15,7 +28,8 @@ button{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #191414;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
     color: white;
     font-family: Helvetica, Arial, sans-serif;
 }
