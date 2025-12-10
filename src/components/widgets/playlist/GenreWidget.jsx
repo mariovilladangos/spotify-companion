@@ -62,6 +62,16 @@ function GenreWidget({ onSelect, selectedItems }) {
         handleSelection();
     }, [isSel]);
 
+    function handleMouseEnter(elem){
+        let color = "var(--primary)"
+        if (isSel) color = "red"
+        elem.style.border = "10px solid " + color;
+    }
+
+    function handleMouseLeave(elem){
+        elem.style.border = "none";
+    }
+
     return(
         <>
             {gen != null ?
@@ -74,7 +84,8 @@ function GenreWidget({ onSelect, selectedItems }) {
                         {gen.items.length > 0 ? gen.items.map((genre, i) => (
                             <div key={i} className="Item">
                                 <p>{genre}</p>
-                                <img src={'/DefUser.png'} alt={genre} title={genre} onClick={() => handleImg(genre)} />
+                                <img src={'/DefUser.png'} alt={genre} title={genre} onClick={() => handleImg(genre)}
+                                     onMouseEnter={(e) => handleMouseEnter(e.target)} onMouseLeave={(e) => handleMouseLeave(e.target)} />
                             </div>
                         )) : <span><h3>No has seleccionado ningúna genada.</h3></span>}
                     </div>

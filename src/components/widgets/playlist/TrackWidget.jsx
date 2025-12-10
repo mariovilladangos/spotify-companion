@@ -102,6 +102,16 @@ function DecadeWidget({ tracks }) {
         handleFavorites();
     }, [router, isFav]);
 
+    function handleMouseEnter(elem){
+        let color = "var(--primary)"
+        if (isFav) color = "red"
+        elem.style.border = "10px solid " + color;
+    }
+
+    function handleMouseLeave(elem){
+        elem.style.border = "none";
+    }
+
     return(
         <>
             {data != null?
@@ -116,7 +126,8 @@ function DecadeWidget({ tracks }) {
                         {data.items.length > 0 ? data.items.map((track) => (
                             <div key={track.id} className="Item">
                                 {track.name ? <p>{track.name}</p> : null}
-                                {track.album.images[0] ? <img src={track.album.images[0].url} alt={track.name} title={track.name} onClick={() => handleImg(track)} /> : null}
+                                {track.album.images[0] ? <img src={track.album.images[0].url} alt={track.name} title={track.name} onClick={() => handleImg(track)}
+                                onMouseEnter={(e) => handleMouseEnter(e.target)} onMouseLeave={(e) => handleMouseLeave(e.target)}/> : null}
                             </div>
                         )) :  <span><h3>Tu playlist está vacía :( {isFav}</h3></span>}
                     </div>

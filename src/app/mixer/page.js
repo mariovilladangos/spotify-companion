@@ -157,7 +157,7 @@ export function Home() {
                     <GenreWidget onSelect={onSelectElement} selectedItems={genres} />
                     <DecadeWidget onSelect={onSelectElement} selectedItems={decades} />
                     <PopularityWidget onSelect={onSelectElement} selectedItems={populatiry} ></PopularityWidget>
-                    <button onClick={getPlaylist}>Crear Playlist</button>
+                    <button onClick={getPlaylist}>Crear Playlist (esto eliminará la actual lista)</button>
                 </div>
             : null}
         </div>

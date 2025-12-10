@@ -95,6 +95,16 @@ function ArtistWidget({ onSelect, selectedItems }) {
         handleSelection();
     }, [isSel]);
 
+    function handleMouseEnter(elem){
+        let color = "var(--primary)"
+        if (isSel) color = "red"
+        elem.style.border = "10px solid " + color;
+    }
+
+    function handleMouseLeave(elem){
+        elem.style.border = "none";
+    }
+
     return(
         <>
             {data != null ?
@@ -109,7 +119,8 @@ function ArtistWidget({ onSelect, selectedItems }) {
                         {data.items.length > 0 ? data.items.map((artist) => (
                             <div key={artist.id} className="Item">
                                 {artist.name ? <p>{artist.name}</p> : null}
-                                {<img src={artist.images[0]?.url ?? '/DefUser.png'} alt={artist.name} title={artist.name} onClick={() => handleImg(artist)} />}
+                                {<img src={artist.images[0]?.url ?? '/DefUser.png'} alt={artist.name} title={artist.name} onClick={() => handleImg(artist)}
+                                      onMouseEnter={(e) => handleMouseEnter(e.target)} onMouseLeave={(e) => handleMouseLeave(e.target)} />}
                             </div>
                         )) : <span><h3>No has seleccionado ningún artista.</h3></span>}
                     </div>

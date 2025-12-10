@@ -60,6 +60,16 @@ function DecadeWidget({ onSelect, selectedItems }) {
         handleSelection();
     }, [isSel]);
 
+    function handleMouseEnter(elem){
+        let color = "var(--primary)"
+        if (isSel) color = "red"
+        elem.style.border = "10px solid " + color;
+    }
+
+    function handleMouseLeave(elem){
+        elem.style.border = "none";
+    }
+
     return(
         <>
             {dec != null ?
@@ -72,7 +82,8 @@ function DecadeWidget({ onSelect, selectedItems }) {
                         {dec.items.length > 0 ? dec.items.map((decade, i) => (
                             <div key={i} className="Item">
                                 <p>{decade}</p>
-                                <img src={'/DefUser.png'} alt={decade} title={decade} onClick={() => handleImg(decade)} />
+                                <img src={'/DefUser.png'} alt={decade} title={decade} onClick={() => handleImg(decade)}
+                                     onMouseEnter={(e) => handleMouseEnter(e.target)} onMouseLeave={(e) => handleMouseLeave(e.target)} />
                             </div>
                         )) : <span><h3>No has seleccionado ningúna decada.</h3></span>}
                     </div>
