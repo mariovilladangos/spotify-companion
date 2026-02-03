@@ -3,7 +3,7 @@ import './Navbar.css';
 import {useRouter} from "next/navigation";
 import {useEffect, useState, useRef} from "react";
 
-export default function Navbar({ imgUrl, onRefresh, page }) {
+export default function Navbar({ imgUrl, userUrl, onRefresh, page }) {
     const router = useRouter();
     const d = useRef(null);
     const m = useRef(null);
@@ -55,7 +55,7 @@ export default function Navbar({ imgUrl, onRefresh, page }) {
     return(
         <div className={"Nav"}>
             <div className={"NavLeft"}>
-                <img src={imgUrl?? '/DefUser.png'} />
+                <img src={imgUrl?? '/DefUser.png'} onClick={() => {userUrl ? window.open(userUrl, '_blank') : null}} />
             </div>
             <div className={"NavCenter"}>
                 <div ref={d}

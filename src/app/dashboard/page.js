@@ -13,6 +13,7 @@ import './Dashboard.css';
 export function Home() {
     const router = useRouter();
     const [data, setData] = useState(null);
+    const [actualData, setActualData] = useState(null);
 
     async function Fetch() {
         try {
@@ -26,18 +27,30 @@ export function Home() {
         }
     }
 
+    async function RefreshData(){
+        try{
+            const actualSong = await spotifyRequest(`https://api.spotify.com/v1/me/player/currently-playing`);
+            console.log(actualSong);
+            setActualData(actualSong);
+        }
+        catch (error){
+            console.error('Error refreshing data:', error);
+        }
+    }
+
     const tryFetch = () => {
         try { Fetch(); }
         catch (error) { console.error('Fetch error:', error); }
     }
 
     useEffect(() => {
-        tryFetch()
+        tryFetch();
+        setInterval(()=> { RefreshData() }, 10000);
     }, [router])
 
     return (
         <div className={"DashboardApp"}>
-            <Navbar imgUrl={data?.images[0]?.url?? null} onRefresh={tryFetch} page={'d'} />
+            <Navbar imgUrl={data?.images[0]?.url?? null} userUrl={data?.external_urls?.spotify?? null} onRefresh={tryFetch} page={'d'} />
             {data != null ?
                 <div className={"DashboardMain"}>
                     <h2>Bienvenido de vuelta, {data.display_name}!</h2>

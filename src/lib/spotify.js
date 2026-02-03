@@ -73,6 +73,11 @@ export async function spotifyRequest(url) {
 
     if (response.status === 401) {
         const newToken = await refreshAccessToken();
+        if (!newToken) {
+            window.location.href = '/';
+            return;
+        }
+
     }
 
     if (!response.ok) {

@@ -55,6 +55,15 @@
     box-sizing: content-box;
     /*animation: breadingProfileBorder ease-in-out 15s infinite;*/
 }
+.NavLeft img:hover{
+    cursor: pointer;
+    border: 6px solid #343434;
+}
+.NavLeft img:active{
+    width: 34px;
+    height: 34px;
+    border: 8px solid #343434;
+}
 
 .NavCenter{
     display: flex;

@@ -10,32 +10,33 @@ export function generateRandomString(length) {
 
 // Construir URL de autorización de Spotify
 export function getSpotifyAuthUrl() {
-  const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || '';
-  const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI || '';
-  const state = generateRandomString(16);
+    const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || '';
+    const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI || '';
+    const state = generateRandomString(16);
 
-  // Guardar el state para validación posterior (prevenir CSRF)
-  if (typeof window !== 'undefined') {
+    // Guardar el state para validación posterior (prevenir CSRF)
+    if (typeof window !== 'undefined') {
     localStorage.setItem('spotify_auth_state', state);
-  }
+    }
 
-  const scope = [
-    'user-read-private',
-    'user-read-email',
-    'user-top-read',
-    'playlist-modify-public',
-    'playlist-modify-private'
-  ].join(' ');
+    const scope = [
+        'user-read-private',
+        'user-read-email',
+        'user-top-read',
+        'playlist-modify-public',
+        'playlist-modify-private',
+        'user-read-playback-state'
+    ].join(' ');
 
-  const params = new URLSearchParams({
+    const params = new URLSearchParams({
     client_id: clientId,
     response_type: 'code',
     redirect_uri: redirectUri,
     state: state,
     scope: scope
-  });
+    });
 
-  return `https://accounts.spotify.com/authorize?${params.toString()}`;
+    return `https://accounts.spotify.com/authorize?${params.toString()}`;
 }
 
 // Guardar tokens en localStorage
